@@ -22,7 +22,7 @@
 
   programs.git = {
     enable = true;
-    igores = [ ];
+    ignores = [ ];
     userEmail = "lin123456steve@outlook.com";
     userName = "YuntaoLincs";
   };
