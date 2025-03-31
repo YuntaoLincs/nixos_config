@@ -21,7 +21,36 @@
     recursive = true;
   };
 
-  programs.alacritty = { enable = true; };
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      window.dimensions = {
+        lines = 40;
+        columns = 120;
+      };
+      options_as_alt = "Both";
+      window.padding = {
+        x = 10;
+        y = 10;
+      };
+
+      colors.primary = {
+        background = "#1e1e1e";
+        foreground = "#f0f0f0";
+      };
+
+      colors.normal = {
+        black = "#000000";
+        red = "#ff0000";
+        green = "#00ff00";
+        yellow = "#ffff00";
+        blue = "#0000ff";
+        magenta = "#ff00ff";
+        cyan = "#00ffff";
+        white = "#ffffff";
+      };
+    };
+  };
 
   programs.git = {
     enable = true;

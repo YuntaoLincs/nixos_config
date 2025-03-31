@@ -1,0 +1,40 @@
+# Alacritty Configuration File (Hypothetical TOML format)
+
+# Window settings
+[window]
+  # Window dimensions
+  dimensions = { columns = 120, lines = 40 }
+  padding = { x = 10, y = 10 }
+  option_as_alt = Both
+
+# Colors
+[colors]
+  [colors.primary]
+  background = "#1e1e1e"
+  foreground = "#f0f0f0"
+
+  [colors.normal]
+  black   = "#000000"
+  red     = "#ff0000"
+  green   = "#00ff00"
+  yellow  = "#ffff00"
+  blue    = "#0000ff"
+  magenta = "#ff00ff"
+  cyan    = "#00ffff"
+  white   = "#ffffff"
+
+  [colors.bright]
+  black   = "#808080"
+  red     = "#ff8080"
+  green   = "#80ff80"
+  yellow  = "#ffff80"
+  blue    = "#8080ff"
+  magenta = "#ff80ff"
+  cyan    = "#80ffff"
+  white   = "#ffffff"
+
+# Font settings
+[font]
+  family = "Fira Code"
+  style = "Regular"
+  size = 12.0

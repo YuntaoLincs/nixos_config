@@ -23,10 +23,12 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
 
+    mac-app-util.url = "github:hraban/mac-app-util";
+
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, homebrew-core
-    , homebrew-cask, home-manager, nix-vscode-extensions, ... }:
+    , homebrew-cask, home-manager, nix-vscode-extensions, mac-app-util, ... }:
     let
       configuration = { pkgs, config, ... }: {
         # List packages installed in system profile. To search by name, run:
@@ -99,6 +101,7 @@
         # Add the home-manager vscode extensions market package set into the nixpkgs
 
         nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ];
+
       };
     in {
       # Build darwin flake using:
@@ -107,6 +110,7 @@
         nix-darwin.lib.darwinSystem {
           modules = [
             configuration
+            mac-app-util.darwinModules.default
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -119,6 +123,9 @@
               # 使用 home-manager.extraSpecialArgs 自定义传递给 ./home.nix 的参数
               # 取消注释下面这一行，就可以在 home.nix 中使用 flake 的所有 inputs 参数了
               home-manager.extraSpecialArgs = inputs;
+
+              home-manager.sharedModules =
+                [ mac-app-util.homeManagerModules.default ];
             }
             nix-homebrew.darwinModules.nix-homebrew
             {
