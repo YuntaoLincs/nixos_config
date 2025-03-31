@@ -44,7 +44,7 @@
         ];
         homebrew = {
           enable = true;
-          casks = [ "chatgpt" "wechat" "qqmusic" "qq" ];
+          casks = [ "chatgpt" "wechat" "qqmusic" "qq" "steam" ];
           brews = [ "mas" ];
           masApps = { "vivid" = 6443470555; };
           onActivation.cleanup = "zap";

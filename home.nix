@@ -11,6 +11,7 @@
     yazi
     helix
     git
+    alacritty
   ];
 
   home.file = { ".vimrc".source = ./dot_file/vim_configuration; };
@@ -20,9 +21,11 @@
     recursive = true;
   };
 
+  programs.alacritty = { enable = true; };
+
   programs.git = {
     enable = true;
-    ignores = [ ];
+    ignores = [ "ssh_folder" ];
     userEmail = "lin123456steve@outlook.com";
     userName = "YuntaoLincs";
   };
