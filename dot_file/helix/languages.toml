@@ -1,0 +1,6 @@
+[[language]]
+auto-format = true
+name = "nix"
+
+[language.formatter]
+command = "/nix/store/ydc9hgv5h8p1kbqnp57npqzjq2akv0x0-nixfmt-0.6.0-bin/bin/nixfmt"
