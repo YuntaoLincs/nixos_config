@@ -43,6 +43,8 @@
           pkgs.clang
           pkgs.gcc
           pkgs.ollama
+
+          pkgs.python3
         ];
         homebrew = {
           enable = true;

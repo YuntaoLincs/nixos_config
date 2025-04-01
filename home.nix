@@ -16,11 +16,6 @@
 
   home.file = { ".vimrc".source = ./dot_file/vim_configuration; };
 
-  xdg.configFile."helix" = {
-    source = ./dot_file/helix;
-    recursive = true;
-  };
-
   programs.alacritty = {
     enable = true;
     settings = {
@@ -28,7 +23,7 @@
         lines = 40;
         columns = 120;
       };
-      options_as_alt = "Both";
+      window.option_as_alt = "Both";
       window.padding = {
         x = 10;
         y = 10;
@@ -62,7 +57,13 @@
   # Enable VSCode and configure extensions via Home Manager
   programs.vscode = {
     enable = true;
-    extensions = with pkgs.vscode-extensions; [ vscodevim.vim bbenoist.nix ];
+    extensions = with pkgs.vscode-extensions; [
+      vscodevim.vim
+      bbenoist.nix
+      ms-python.python
+
+      visualstudioexptteam.vscodeintellicode
+    ];
   };
 
   programs.yazi = { enable = true; };
@@ -77,11 +78,28 @@
         select = "underline";
       };
     };
-    languages.language = [{
-      name = "nix";
-      auto-format = true;
-      formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
-    }];
+    languages = {
+      language = [
+        {
+          name = "python";
+          auto-format = true;
+          formatter = { command = "${pkgs.black}/bin/black"; };
+          language-servers = [ "pylsp" ];
+        }
+        {
+          name = "nix";
+          auto-format = true;
+          formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
+        }
+      ];
+      # language-server.pylsp = {
+      #  command = "${pkgs.pylsp}/bin/pylsp";
+      #  config.pylsp = {
+
+      #  }
+      #  }
+
+    };
     themes = {
       autumn_night_transparent = {
         "inherits" = "autumn_night";
