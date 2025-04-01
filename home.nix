@@ -1,5 +1,5 @@
 # home.nix
-{ pkgs, config, ... }: {
+{ pkgs, config, lib, ... }: {
   # Home Manager options go here
   home.username = "linyuntao"; # Set the user name (change as needed)
   home.homeDirectory = "/Users/linyuntao"; # Set the home directory
@@ -13,11 +13,36 @@
     git
     alacritty
     zed
+    zsh
   ];
 
   home.file = { ".vimrc".source = ./dot_file/vim_configuration; };
 
   programs.zed-editor = { enable = true; };
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+
+    shellAliases = {
+      ll = "ls -l";
+      ls = "ls --color=auto";
+      update = "darwin-rebuild switch --flake ~/nix-darwin";
+    };
+    initContent = ''
+      autoload -U colors && colors
+      setopt prompt_subst
+      PROMPT='❰%{$fg[green]%}%n%{$reset_color%}|%{$fg[yellow]%}%1~%{$reset_color%}%{$fg[cyan]%}$(git branch --show-current 2&> /dev/null | xargs -I branch echo "(branch)")%{$reset_color%}❱ '
+    '';
+
+    plugins = [{
+      name = "zsh-z";
+      src = "${pkgs.zsh-z}/share/zsh-z";
+    }];
+
+    history.size = 10000;
+  };
 
   programs.alacritty = {
     enable = true;
@@ -42,7 +67,7 @@
         red = "#ff0000";
         green = "#00ff00";
         yellow = "#ffff00";
-        blue = "#0000ff";
+        blue = "#38a6c9";
         magenta = "#ff00ff";
         cyan = "#00ffff";
         white = "#ffffff";
@@ -85,10 +110,16 @@
     enable = true;
     settings = {
       theme = "autumn_night_transparent";
-      editor.cursor-shape = {
-        normal = "block";
-        insert = "bar";
-        select = "underline";
+      editor = {
+        cursor-shape = {
+          normal = "block";
+          insert = "bar";
+          select = "underline";
+        };
+
+        color-modes = true;
+        lsp.display-inlay-hints = true;
+        true-color = true;
       };
     };
     languages = {
@@ -106,6 +137,7 @@
           name = "nix";
           auto-format = true;
           formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
+          language-servers = [ "nil" ];
         }
       ];
       language-server = {
@@ -117,6 +149,8 @@
           command = "${pkgs.ruff}/bin/ruff";
           args = [ "server" ];
         };
+
+        nil = { command = "${pkgs.nil}/bin/nil"; };
       };
       # language-server.pylsp = {
       #  command = "${pkgs.pylsp}/bin/pylsp";
