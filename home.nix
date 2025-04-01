@@ -12,9 +12,12 @@
     helix
     git
     alacritty
+    zed
   ];
 
   home.file = { ".vimrc".source = ./dot_file/vim_configuration; };
+
+  programs.zed-editor = { enable = true; };
 
   programs.alacritty = {
     enable = true;
@@ -57,13 +60,23 @@
   # Enable VSCode and configure extensions via Home Manager
   programs.vscode = {
     enable = true;
-    extensions = with pkgs.vscode-extensions; [
-      vscodevim.vim
-      bbenoist.nix
-      ms-python.python
-
+    extensions = with pkgs.vscode-marketplace; [
+      # vscodevim.vim
+      # Support for python 
+      njpwerner.autodocstring
       visualstudioexptteam.vscodeintellicode
+      visualstudioexptteam.intellicode-api-usage-examples
+      wholroyd.jinja
+      ms-python.python
+      ms-python.vscode-pylance
+      ms-python.debugpy
+      batisteo.vscode-django
+      kevinrose.vsc-python-indent
+      donjayamanne.python-environment-manager
+
+      jasew.vscode-helix-emulation
     ];
+
   };
 
   programs.yazi = { enable = true; };
@@ -83,8 +96,11 @@
         {
           name = "python";
           auto-format = true;
-          formatter = { command = "${pkgs.black}/bin/black"; };
-          language-servers = [ "pylsp" ];
+          language-servers = [
+            "ruff"
+
+            "basedpyright"
+          ];
         }
         {
           name = "nix";
@@ -92,6 +108,16 @@
           formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
         }
       ];
+      language-server = {
+        basedpyright = {
+          command = "${pkgs.basedpyright}/bin/basedpyright-langserver";
+        };
+
+        ruff = {
+          command = "${pkgs.ruff}/bin/ruff";
+          args = [ "server" ];
+        };
+      };
       # language-server.pylsp = {
       #  command = "${pkgs.pylsp}/bin/pylsp";
       #  config.pylsp = {
