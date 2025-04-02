@@ -1,5 +1,14 @@
 # home.nix
-{ pkgs, config, lib, ... }: {
+{ pkgs, config, lib, ... }:
+let
+  yazi_flavor_pkgs = pkgs.fetchFromGitHub {
+    owner = "yazi-rs";
+    repo = "flavors";
+    rev = "main";
+    sha256 = "sha256-nhIhCMBqr4VSzesplQRF6Ik55b3Ljae0dN+TYbzQb5s=";
+  };
+
+in {
   # Home Manager options go here
   home.username = "linyuntao"; # Set the user name (change as needed)
   home.homeDirectory = "/Users/linyuntao"; # Set the home directory
@@ -14,6 +23,7 @@
     alacritty
     zed
     zsh
+    tmux
   ];
 
   home.file = { ".vimrc".source = ./dot_file/vim_configuration; };
@@ -29,11 +39,22 @@
       ll = "ls -l";
       ls = "ls --color=auto";
       update = "darwin-rebuild switch --flake ~/nix-darwin";
+
     };
     initContent = ''
       autoload -U colors && colors
       setopt prompt_subst
       PROMPT='❰%{$fg[green]%}%n%{$reset_color%}|%{$fg[yellow]%}%1~%{$reset_color%}%{$fg[cyan]%}$(git branch --show-current 2&> /dev/null | xargs -I branch echo "(branch)")%{$reset_color%}❱ '
+      bindkey '^ ' autosuggest-accept
+
+      function y() {
+      	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+      	yazi "$@" --cwd-file="$tmp"
+      	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+      		builtin cd -- "$cwd"
+      	fi
+      	rm -f -- "$tmp"
+      }
     '';
 
     plugins = [{
@@ -104,10 +125,22 @@
 
   };
 
-  programs.yazi = { enable = true; };
+  programs.yazi = {
+    enable = true;
+    settings = {
+      # opener = {
+      #   edit = [
+      #     {run = '"${pkgs.helix}/bin/hex" "@"', block = true, for = "unix"}
+      #   ];
+      # };
+    };
+    theme = { flavor = { dark = "dracula"; }; };
+    flavors = { dracula = "${yazi_flavor_pkgs}/dracula.yazi"; };
+  };
 
   programs.helix = {
     enable = true;
+    defaultEditor = true;
     settings = {
       theme = "autumn_night_transparent";
       editor = {
