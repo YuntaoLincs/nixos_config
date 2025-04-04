@@ -45,12 +45,86 @@
           pkgs.ollama
 
           pkgs.python3
+
+          pkgs.nerd-font-patcher
+          pkgs.ffmpeg
+          pkgs.imagemagick
+
+          # pkgs.nerd-fonts._0xproto
+          # pkgs.nerd-fonts._3270
+          # pkgs.nerd-fonts.agave
+          # pkgs.nerd-fonts.anonymice
+          # pkgs.nerd-fonts.arimo
+          # pkgs.nerd-fonts.aurulent-sans-mono
+          # pkgs.nerd-fonts.bigblue-terminal
+          # pkgs.nerd-fonts.bitstream-vera-sans-mono
+          # pkgs.nerd-fonts.blex-mono
+          # pkgs.nerd-fonts.caskaydia-cove
+          # pkgs.nerd-fonts.caskaydia-mono
+          # pkgs.nerd-fonts.code-new-roman
+          # pkgs.nerd-fonts.comic-shanns-mono
+          # pkgs.nerd-fonts.commit-mono
+          # pkgs.nerd-fonts.cousine
+          # pkgs.nerd-fonts.d2coding
+          # pkgs.nerd-fonts.daddy-time-mono
+          # pkgs.nerd-fonts.departure-mono
+          # pkgs.nerd-fonts.dejavu-sans-mono
+          # pkgs.nerd-fonts.droid-sans-mono
+          # pkgs.nerd-fonts.envy-code-r
+          # pkgs.nerd-fonts.fantasque-sans-mono
+          # pkgs.nerd-fonts.fira-code
+          # pkgs.nerd-fonts.fira-mono
+          # pkgs.nerd-fonts.geist-mono
+          # pkgs.nerd-fonts.go-mono
+          # pkgs.nerd-fonts.gohufont
+          # pkgs.nerd-fonts.hack
+          # pkgs.nerd-fonts.hasklug
+          # pkgs.nerd-fonts.heavy-data
+          # pkgs.nerd-fonts.hurmit
+          # pkgs.nerd-fonts.im-writing
+          # pkgs.nerd-fonts.inconsolata
+          # pkgs.nerd-fonts.inconsolata-go
+          # pkgs.nerd-fonts.inconsolata-lgc
+          # pkgs.nerd-fonts.intone-mono
+          # pkgs.nerd-fonts.iosevka
+          # pkgs.nerd-fonts.iosevka-term
+          # pkgs.nerd-fonts.iosevka-term-slab
+          pkgs.nerd-fonts.jetbrains-mono
+          # pkgs.nerd-fonts.lekton
+          # pkgs.nerd-fonts.liberation
+          # pkgs.nerd-fonts.lilex
+          # pkgs.nerd-fonts.martian-mono
+          # pkgs.nerd-fonts.meslo-lg
+          # pkgs.nerd-fonts.monaspace
+          # pkgs.nerd-fonts.monofur
+          # pkgs.nerd-fonts.monoid
+          # pkgs.nerd-fonts.mononoki
+          # pkgs.nerd-fonts.mplus
+          # pkgs.nerd-fonts.noto
+          # pkgs.nerd-fonts.open-dyslexic
+          # pkgs.nerd-fonts.overpass
+          # pkgs.nerd-fonts.profont
+          # pkgs.nerd-fonts.proggy-clean-tt
+          # pkgs.nerd-fonts.recursive-mono
+          # pkgs.nerd-fonts.roboto-mono
+          # pkgs.nerd-fonts.shure-tech-mono
+          # pkgs.nerd-fonts.sauce-code-pro
+          # pkgs.nerd-fonts.space-mono
+          # pkgs.nerd-fonts.symbols-only
+          # pkgs.nerd-fonts.terminess-ttf
+          # pkgs.nerd-fonts.tinos
+          pkgs.nerd-fonts.ubuntu
+          pkgs.nerd-fonts.ubuntu-mono
+          pkgs.nerd-fonts.ubuntu-sans
+          pkgs.nerd-fonts.victor-mono
+          pkgs.nerd-fonts.zed-mono
         ];
         homebrew = {
           enable = true;
-          casks = [ "chatgpt" "wechat" "qqmusic" "qq" "steam" ];
-          brews = [ "mas" ];
-          masApps = { "vivid" = 6443470555; };
+          casks = [ "chatgpt" "wechat" "qqmusic" "qq" "steam" "iina" "iterm2" ];
+          # TODO: Need to be enable if mas list bug finished.
+          # brews = [ "mas" ];
+          # masApps = { "vivid" = 6443470555; };
           onActivation.cleanup = "zap";
           onActivation.autoUpdate = true;
           onActivation.upgrade = true;

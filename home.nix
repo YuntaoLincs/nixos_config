@@ -5,7 +5,8 @@ let
     owner = "yazi-rs";
     repo = "flavors";
     rev = "main";
-    sha256 = "sha256-nhIhCMBqr4VSzesplQRF6Ik55b3Ljae0dN+TYbzQb5s=";
+    sha256 = "sha256-nhIhCMBqr4VSzesplQRF6Ik55b3Ljae0dN+TYbzQb5s";
+    # sha256 = "sha256-nhIhCMBqr4VSzesplQRF6Ik55b3Ljae0dN+TYbzQb5s=";
   };
 
 in {
@@ -21,14 +22,61 @@ in {
     helix
     git
     alacritty
-    zed
+    zed-editor
     zsh
     tmux
+    mpv
+    starship
+    p7zip
+    jq
+    poppler
+    fd
+    ripgrep
+    fzf
+    zoxide
   ];
 
-  home.file = { ".vimrc".source = ./dot_file/vim_configuration; };
+  programs.starship = { enable = true; };
 
-  programs.zed-editor = { enable = true; };
+  home.file = { ".vimrc".source = ./dot_file/vim_configuration; };
+  programs.tmux = {
+    enable = true;
+    extraConfig = ''
+      # Remove the old prefix
+      unbind C-b
+      set -g prefix M-w
+      bind M-w send-prefix
+
+      # Enable mouse support
+
+      set -g mouse on
+
+      # Key bindings
+      bind w select-pane -U   # Use alt+w w to switch windows
+      bind v split-window -h  # Use alt+w v to create a vertical split
+      bind s split-window -v  # Use alt+w s to create a horizontal split
+      bind o kill-pane -a     # Use alt+w o to close all panes except the current one
+      bind h select-pane -R   # Use alt+w h to jump to the window left of the current one
+      bind j select-pane -U   # Use alt+w j to jump to the window below the current one
+      bind k select-pane -D   # Use alt+w k to jump to the window above the current one
+      bind l select-pane -L   # Use alt+w l to jump to the window right of the current one
+
+      # Swap windows
+      bind J swap-pane -U     # Use alt+w J to swap with the window below
+      bind K swap-pane -D     # Use alt+w K to swap with the window above
+
+      # Kill current window
+      bind q kill-pane # Use alt+w q to kill the current window
+      set -g status on
+      set -g escape-time 10
+      # set -g window-status-style bg=yellow
+      # set -g window-status-current-style bg=red,fg=white
+    '';
+  };
+  programs.zed-editor = {
+    enable = true;
+    # userKeymaps = import ~/nix-darwin/home-package/zed/keymap.nix;
+  };
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -39,7 +87,8 @@ in {
       ll = "ls -l";
       ls = "ls --color=auto";
       update = "darwin-rebuild switch --flake ~/nix-darwin";
-
+      x = "sh ~/nix-darwin/shells/exec_cmd.sh $1";
+      lx = "sh ~/nix-darwin/shells/exec_lst_cmd.sh";
     };
     initContent = ''
       autoload -U colors && colors
@@ -93,6 +142,21 @@ in {
         cyan = "#00ffff";
         white = "#ffffff";
       };
+      font = {
+        normal = {
+          family = "JetBrainsMono Nerd Font";
+          style = "Regular";
+        };
+        italic = {
+          family = "JetBrainsMono Nerd Font";
+          style = "Italic";
+        };
+        bold = {
+          family = "JetBrainsMono Nerd Font";
+          style = "Bold";
+        };
+
+      };
     };
   };
 
@@ -127,15 +191,23 @@ in {
 
   programs.yazi = {
     enable = true;
-    settings = {
-      # opener = {
-      #   edit = [
-      #     {run = '"${pkgs.helix}/bin/hex" "@"', block = true, for = "unix"}
-      #   ];
-      # };
+    # settings = {
+    #   opener = {
+    #     play = [
+    #       { # run = '"${pkgs.helix}/bin/hex" "@"', block = true, for = "unix"
+    #         # run = "";
+    #         # orphan - true;
+    #         # for = "unix";
+    #       }
+    #     ];
+    #   };
+    # };
+    # theme = { flavor = { dark = "dracula"; }; };
+    # flavors = { dracula = "${yazi_flavor_pkgs}/dracul.yazi"; };
+    theme = { flavor = { dark = "catppuccin-frappe"; }; };
+    flavors = {
+      catppuccin-frappe = "${yazi_flavor_pkgs}/catppuccin-frappe.yazi";
     };
-    theme = { flavor = { dark = "dracula"; }; };
-    flavors = { dracula = "${yazi_flavor_pkgs}/dracula.yazi"; };
   };
 
   programs.helix = {
@@ -153,6 +225,11 @@ in {
         color-modes = true;
         lsp.display-inlay-hints = true;
         true-color = true;
+      };
+      keys = {
+        normal = {
+          space = { l = ":sh  ~/nix-darwin/shells/exec_lst_cmd.sh"; };
+        };
       };
     };
     languages = {
