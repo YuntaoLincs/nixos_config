@@ -45,7 +45,7 @@ in {
       # Remove the old prefix
       unbind C-b
       set -g prefix M-w
-      bind M-w send-prefix
+      bind M-w send-prefix    # Use alt+w as the send-prefix 
 
       # Enable mouse support
 
@@ -183,8 +183,9 @@ in {
       batisteo.vscode-django
       kevinrose.vsc-python-indent
       donjayamanne.python-environment-manager
-
       jasew.vscode-helix-emulation
+      # ms-vscode.cpptools
+      ms-vscode.cpptools-themes
     ];
 
   };
@@ -249,6 +250,11 @@ in {
           formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
           language-servers = [ "nil" ];
         }
+        {
+          name = "markdown";
+          auto-format = true;
+          language-servers = [ "marksman" ];
+        }
       ];
       language-server = {
         basedpyright = {
@@ -259,6 +265,8 @@ in {
           command = "${pkgs.ruff}/bin/ruff";
           args = [ "server" ];
         };
+
+        marksman = { command = "${pkgs.marksman}/bin/marksman"; };
 
         nil = { command = "${pkgs.nil}/bin/nil"; };
       };
