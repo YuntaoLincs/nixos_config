@@ -38,7 +38,10 @@ in {
 
   programs.starship = { enable = true; };
 
-  home.file = { ".vimrc".source = ./dot_file/vim_configuration; };
+  home.file = {
+    ".vimrc".source = ./dot_file/vim_configuration;
+    ".config/zed/keymap.json".source = ./dot_file/zed/keymap.json;
+  };
   programs.tmux = {
     enable = true;
     extraConfig = ''
@@ -67,7 +70,9 @@ in {
 
       # Kill current window
       bind q kill-pane # Use alt+w q to kill the current window
-      set -g status on
+
+      bind L resize-pane -R 5 # Use alt+w L to resize the pane to right
+      bind H resize-pane -L 5 # Use alt+w H to resize the pane to left
       set -g escape-time 10
       # set -g window-status-style bg=yellow
       # set -g window-status-current-style bg=red,fg=white
@@ -75,7 +80,14 @@ in {
   };
   programs.zed-editor = {
     enable = true;
-    # userKeymaps = import ~/nix-darwin/home-package/zed/keymap.nix;
+    # userKeymaps = import ./home-package/zed/keymap.nix;
+    # # userSettings = import ./home-package/zed/setting.nix;
+    userSettings = {
+      vim_mode = true;
+      ui_font_size = 24;
+      buffer_font_size = 24;
+      buffer_font_family = "JetBrainsMono Nerd Font";
+    };
   };
   programs.zsh = {
     enable = true;
@@ -226,6 +238,8 @@ in {
         color-modes = true;
         lsp.display-inlay-hints = true;
         true-color = true;
+        end-of-line-diagnostics = "hint";
+        inline-diagnostics = { cursor-line = "warning"; };
       };
       keys = {
         normal = {
@@ -243,6 +257,27 @@ in {
 
             "basedpyright"
           ];
+          debugger = {
+            name = "debugpy";
+            transport = "stdio";
+            # command = "${pkgs.python312Packages.debugpy}/bin/debugpy";
+            # args = [  "debugpy.adapter" ];
+            command = "${pkgs.python3}/bin/python3}";
+            args = [ "-m" "debugpy.adapter" ];
+            templates = [{
+              name = "source";
+              request = "launch";
+              completion = [{
+                name = "entrypoint";
+                completion = "filename";
+                default = ".";
+              }];
+              args = {
+                mode = "debug";
+                program = "{0}";
+              };
+            }];
+          };
         }
         {
           name = "nix";
@@ -258,6 +293,13 @@ in {
             args = [ "fmt" "--stdin" "md" ];
           };
           language-servers = [ "marksman" ];
+        }
+        {
+          name = "cpp";
+          indent = {
+            tab-width = 2;
+            unit = "	";
+          };
         }
       ];
       language-server = {
