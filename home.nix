@@ -227,12 +227,23 @@ in {
     enable = true;
     defaultEditor = true;
     settings = {
-      theme = "autumn_night_transparent";
+      # theme = "autumn_night_transparent";
+      theme = "dracula";
       editor = {
         cursor-shape = {
           normal = "block";
           insert = "bar";
           select = "underline";
+        };
+        statusline = {
+          left = [
+            "mode"
+            "spinner"
+            "version-control"
+            "file-modification-indicator"
+          ];
+          center = [ "file-absolute-path" ];
+          right = [ "diagnostics" "position" ];
         };
 
         color-modes = true;
@@ -301,8 +312,16 @@ in {
             unit = "	";
           };
         }
+        {
+          name = "json";
+          language-servers = [ "vscode-json-language-server" ];
+        }
       ];
       language-server = {
+        vscode-json-language-server = {
+          command =
+            "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
+        };
         basedpyright = {
           command = "${pkgs.basedpyright}/bin/basedpyright-langserver";
         };
@@ -325,13 +344,17 @@ in {
 
     };
     themes = {
-      autumn_night_transparent = {
-        "inherits" = "autumn_night";
-        "ui.background" = { };
-      };
+      # autumn_night_transparent = {
+      #   "inherits" = "autumn_night";
+      #   "ui.background" = { };
+      #   "ui.cursor" = {
+      #     fg = "blue";
+      #     modifiers = [ "reversed" ];
+      #   "ui."
+      #   };
+      # };
+      dracula = { "inherits" = "dracula"; };
     };
   };
-
   programs.home-manager.enable = true;
-
 }

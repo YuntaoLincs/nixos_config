@@ -39,7 +39,16 @@
           ++ [ (pkgs.python3.withPackages (ps: with ps; [ debugpy ])) ];
         homebrew = {
           enable = true;
-          casks = [ "chatgpt" "wechat" "qqmusic" "qq" "steam" "iina" "iterm2" ];
+          casks = [
+            "chatgpt"
+            "wechat"
+            "qqmusic"
+            "qq"
+            "steam"
+            "iina"
+            "iterm2"
+            "font-lxgw-wenkai"
+          ];
           # TODO: Need to be enable if mas list bug finished.
           # brews = [ "mas" ];
           # masApps = { "vivid" = 6443470555; };

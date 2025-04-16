@@ -8,6 +8,7 @@ with pkgs; [
   clang
   gcc
   ollama
+  bear
 
   python3
 
