@@ -215,13 +215,34 @@ in {
     flavors = {
       catppuccin-frappe = "${yazi_flavor_pkgs}/catppuccin-frappe.yazi";
     };
-    plugins = { git = "${yazi_plugin_pkgs}/git.yazi"; };
+    plugins = {
+      git = "${yazi_plugin_pkgs}/git.yazi";
+      toggle-pane = "${yazi_plugin_pkgs}/toggle-pane.yazi";
+    };
     initLua = ''
       require("git"):setup()
+      -- ~/.config/yazi/init.lua
       th.git = th.git or {}
+      th.git.modified = ui.Style():fg("blue")
+      th.git.deleted = ui.Style():fg("red"):bold()
       th.git.modified_sign = "M"
       th.git.deleted_sign = "D"
     '';
+    keymap = {
+      manager.prepend_keymap = [
+        {
+          on = "T";
+          run = "plugin toggle-pane min-current";
+          desc = "Show or hide the preview pane";
+        }
+        {
+          on = "T";
+          run = "plugin toggle-pane max-current";
+          desc = "Maximize or restore the preview pane";
+
+        }
+      ];
+    };
     settings = {
       plugin.prepend_fetchers = [
         {
