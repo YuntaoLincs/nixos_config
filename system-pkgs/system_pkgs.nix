@@ -10,7 +10,9 @@ with pkgs; [
   ollama
   bear
   wget
+  glow
 
+  yazi
   python3
 
   nerd-font-patcher

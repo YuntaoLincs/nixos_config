@@ -8,6 +8,12 @@ let
     sha256 = "sha256-nhIhCMBqr4VSzesplQRF6Ik55b3Ljae0dN+TYbzQb5s";
     # sha256 = "sha256-nhIhCMBqr4VSzesplQRF6Ik55b3Ljae0dN+TYbzQb5s=";
   };
+  yazi_plugin_pkgs = pkgs.fetchFromGitHub {
+    owner = "yazi-rs";
+    repo = "plugins";
+    rev = "main";
+    sha256 = "sha256-LWN0riaUazQl3llTNNUMktG+7GLAHaG/IxNj1gFhDRE=";
+  };
 
 in {
   # Home Manager options go here
@@ -18,7 +24,7 @@ in {
   # Example: Add some packages
   home.packages = with pkgs; [
     vscode # Install VSCode package here
-    yazi
+    # yazi
     helix
     git
     alacritty
@@ -221,6 +227,22 @@ in {
     theme = { flavor = { dark = "catppuccin-frappe"; }; };
     flavors = {
       catppuccin-frappe = "${yazi_flavor_pkgs}/catppuccin-frappe.yazi";
+    };
+    plugins = { git = "${yazi_plugin_pkgs}/git.yazi"; };
+    initLua = ''require("git"):setup()'';
+    settings = {
+      plugin.prepend_fetchers = [
+        {
+          id = "git";
+          name = "*";
+          run = "git";
+        }
+        {
+          id = "git";
+          name = "*/";
+          run = "git";
+        }
+      ];
     };
   };
 
