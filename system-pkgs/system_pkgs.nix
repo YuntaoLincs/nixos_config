@@ -12,7 +12,6 @@ with pkgs; [
   wget
   glow
 
-  yazi
   python3
 
   nerd-font-patcher

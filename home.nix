@@ -24,7 +24,7 @@ in {
   # Example: Add some packages
   home.packages = with pkgs; [
     vscode # Install VSCode package here
-    # yazi
+    yazi
     helix
     git
     alacritty
@@ -211,25 +211,17 @@ in {
 
   programs.yazi = {
     enable = true;
-    # settings = {
-    #   opener = {
-    #     play = [
-    #       { # run = '"${pkgs.helix}/bin/hex" "@"', block = true, for = "unix"
-    #         # run = "";
-    #         # orphan - true;
-    #         # for = "unix";
-    #       }
-    #     ];
-    #   };
-    # };
-    # theme = { flavor = { dark = "dracula"; }; };
-    # flavors = { dracula = "${yazi_flavor_pkgs}/dracul.yazi"; };
     theme = { flavor = { dark = "catppuccin-frappe"; }; };
     flavors = {
       catppuccin-frappe = "${yazi_flavor_pkgs}/catppuccin-frappe.yazi";
     };
     plugins = { git = "${yazi_plugin_pkgs}/git.yazi"; };
-    initLua = ''require("git"):setup()'';
+    initLua = ''
+      require("git"):setup()
+      th.git = th.git or {}
+      th.git.modified_sign = "M"
+      th.git.deleted_sign = "D"
+    '';
     settings = {
       plugin.prepend_fetchers = [
         {
