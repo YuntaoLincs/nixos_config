@@ -24,11 +24,13 @@
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
 
     mac-app-util.url = "github:hraban/mac-app-util";
+    helix.url = "github:helix-editor/helix/master";
 
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, homebrew-core
-    , homebrew-cask, home-manager, nix-vscode-extensions, mac-app-util, ... }:
+    , homebrew-cask, home-manager, nix-vscode-extensions, mac-app-util, helix
+    , ... }:
     let
       configuration = { pkgs, config, ... }: {
         # List packages installed in system profile. To search by name, run:

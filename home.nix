@@ -1,5 +1,5 @@
 # home.nix
-{ pkgs, config, lib, ... }:
+{ pkgs, helix, config, lib, ... }:
 let
   yazi_flavor_pkgs = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
@@ -218,6 +218,8 @@ in {
     plugins = {
       git = "${yazi_plugin_pkgs}/git.yazi";
       toggle-pane = "${yazi_plugin_pkgs}/toggle-pane.yazi";
+      jump-to-char = "${yazi_plugin_pkgs}/jump-to-char.yazi";
+      vcs-files = "${yazi_plugin_pkgs}/vcs-files.yazi";
     };
     initLua = ''
       require("git"):setup()
@@ -239,7 +241,16 @@ in {
           on = "T";
           run = "plugin toggle-pane max-current";
           desc = "Maximize or restore the preview pane";
-
+        }
+        {
+          on = "f";
+          run = "plugin jump-to-char";
+          desc = "Jump to char";
+        }
+        {
+          on = [ "g" "c" ];
+          run = "plugin vcs-files";
+          desc = "Show Git file changes";
         }
       ];
     };
@@ -262,6 +273,7 @@ in {
   programs.helix = {
     enable = true;
     defaultEditor = true;
+    package = helix.packages.${pkgs.system}.default;
     settings = {
       # theme = "autumn_night_transparent";
       theme = "dracula";
@@ -291,6 +303,13 @@ in {
       keys = {
         normal = {
           space = { l = ":sh  ~/nix-darwin/shells/exec_lst_cmd.sh"; };
+          C-y = [
+            ":sh rm -f /tmp/unique-file"
+            ":insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file"
+            '':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty''
+            ":open %sh{cat /tmp/unique-file}"
+            ":redraw"
+          ];
         };
       };
     };
