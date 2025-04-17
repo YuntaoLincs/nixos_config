@@ -14,6 +14,9 @@ let
     rev = "main";
     sha256 = "sha256-LWN0riaUazQl3llTNNUMktG+7GLAHaG/IxNj1gFhDRE=";
   };
+  # yazi_plugin_pkgs2 = pkgs.fetchFromGitHub {
+  #   owner = "Rolv-Apneseth"
+  # }
 
 in {
   # Home Manager options go here
@@ -220,15 +223,13 @@ in {
       toggle-pane = "${yazi_plugin_pkgs}/toggle-pane.yazi";
       jump-to-char = "${yazi_plugin_pkgs}/jump-to-char.yazi";
       vcs-files = "${yazi_plugin_pkgs}/vcs-files.yazi";
+      starship = pkgs.yaziPlugins.starship;
     };
     initLua = ''
-      require("git"):setup()
-      -- ~/.config/yazi/init.lua
-      th.git = th.git or {}
-      th.git.modified = ui.Style():fg("blue")
-      th.git.deleted = ui.Style():fg("red"):bold()
-      th.git.modified_sign = "M"
-      th.git.deleted_sign = "D"
+      require("git"):setup{
+        order = 0
+      }
+      require("starship"):setup()
     '';
     keymap = {
       manager.prepend_keymap = [
