@@ -116,12 +116,13 @@ in {
       	fi
       	rm -f -- "$tmp"
       }
+      eval "$(zoxide init zsh)"
     '';
 
-    plugins = [{
-      name = "zsh-z";
-      src = "${pkgs.zsh-z}/share/zsh-z";
-    }];
+    # plugins = [{
+    #   name = "zsh-z";
+    #   src = "${pkgs.zsh-z}/share/zsh-z";
+    # }];
 
     history.size = 10000;
   };
