@@ -9,12 +9,14 @@ with pkgs; [
   gcc
   ollama
   bear
+  wget
 
   python3
 
   nerd-font-patcher
   ffmpeg
   imagemagick
+  poppler
 
   nerd-fonts._0xproto
   nerd-fonts._3270
