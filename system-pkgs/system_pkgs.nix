@@ -12,8 +12,8 @@ with pkgs; [
   wget
   glow
 
-  python3
-
+  # python3
+  # python312Packages.debugpy
   nerd-font-patcher
   ffmpeg
   imagemagick

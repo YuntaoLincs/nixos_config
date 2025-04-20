@@ -329,7 +329,8 @@ in {
             transport = "stdio";
             # command = "${pkgs.python312Packages.debugpy}/bin/debugpy";
             # args = [  "debugpy.adapter" ];
-            command = "${pkgs.python3}/bin/python3}";
+            # command = "${pkgs.python3}/bin/python3}";
+            command = "python";
             args = [ "-m" "debugpy.adapter" ];
             templates = [{
               name = "source";
