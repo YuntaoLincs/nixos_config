@@ -12,6 +12,8 @@ with pkgs; [
   wget
   glow
 
+  tdf # terminal inline pdf viewer
+
   # python3
   # python312Packages.debugpy
   nerd-font-patcher
