@@ -43,6 +43,7 @@ in {
     ripgrep
     fzf
     zoxide
+    typst
   ];
 
   programs.starship = { enable = true; };
@@ -363,6 +364,12 @@ in {
           language-servers = [ "marksman" ];
         }
         {
+          name = "typst";
+          auto-format = true;
+          language-servers = [ "tinymist" ];
+          formatter = { command = "${pkgs.typstfmt}/bin/typstfmt"; };
+        }
+        {
           name = "cpp";
           indent = {
             tab-width = 2;
@@ -391,6 +398,8 @@ in {
         marksman = { command = "${pkgs.marksman}/bin/marksman"; };
 
         nil = { command = "${pkgs.nil}/bin/nil"; };
+
+        tinymist = { command = "${pkgs.tinymist}/bin/tinymist"; };
       };
       # language-server.pylsp = {
       #  command = "${pkgs.pylsp}/bin/pylsp";

@@ -50,6 +50,7 @@
             "iina"
             "iterm2"
             "font-lxgw-wenkai"
+            "font-lxgw-bright"
           ];
           # TODO: Need to be enable if mas list bug finished.
           # brews = [ "mas" ];
@@ -78,7 +79,10 @@
             ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
           done
         '';
-        system.defaults = { dock.autohide = true; };
+        system.defaults = {
+          dock.autohide = false;
+          dock.orientation = "right";
+        };
 
         system.keyboard = {
           enableKeyMapping = true;
