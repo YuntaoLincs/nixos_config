@@ -86,6 +86,9 @@ in {
       set -g escape-time 10
       # set -g window-status-style bg=yellow
       # set -g window-status-current-style bg=red,fg=white
+      set -g allow-passthrough on
+      set -ga update-environment TERM
+      set -ga update-environment TERM_PROGRAM
     '';
   };
   programs.zed-editor = {

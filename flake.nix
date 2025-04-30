@@ -51,6 +51,7 @@
             "iterm2"
             "font-lxgw-wenkai"
             "font-lxgw-bright"
+            "orbstack"
           ];
           # TODO: Need to be enable if mas list bug finished.
           # brews = [ "mas" ];
