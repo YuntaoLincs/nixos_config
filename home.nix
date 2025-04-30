@@ -86,9 +86,25 @@ in {
       set -g escape-time 10
       # set -g window-status-style bg=yellow
       # set -g window-status-current-style bg=red,fg=white
+
+      # Setting for yazi
       set -g allow-passthrough on
       set -ga update-environment TERM
       set -ga update-environment TERM_PROGRAM
+
+      # Settings for support the popup window in tmux
+      # alt+w p to create a pop-up window in current env
+      # alt+w p to hide the pop-up window
+      # ctrl+d to kill this pop-up window
+      bind p if-shell -F '#{==:#{session_name},scratch}' { 
+        detach-client 
+      } { 
+        if-shell "tmux has-session -t scratch" {
+          display-popup -E "tmux attach-session -t scratch"
+        } {
+          display-popup -E "tmux new-session -d -c '#{pane_current_path}' -s scratch && tmux set-option -t scratch status off && tmux attach-session -t scratch"
+        }
+      }
     '';
   };
   programs.zed-editor = {
