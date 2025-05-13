@@ -13,6 +13,7 @@ with pkgs; [
   glow
 
   tdf # terminal inline pdf viewer
+  deno # runtime for JavaScript and TypeScript
 
   # python3
   # python312Packages.debugpy

@@ -146,6 +146,9 @@ in {
       	rm -f -- "$tmp"
       }
       eval "$(zoxide init zsh)"
+
+      export PATH="/Users/linyuntao/.deno/bin:$PATH"
+      export PATH="/Users/linyuntao/.local/bin:$PATH"
     '';
 
     # plugins = [{
