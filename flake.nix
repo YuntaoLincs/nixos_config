@@ -56,6 +56,7 @@
           # TODO: Need to be enable if mas list bug finished.
           # brews = [ "mas" ];
           # masApps = { "vivid" = 6443470555; };
+          brews = [ "pandoc" ];
           onActivation.cleanup = "zap";
           onActivation.autoUpdate = true;
           onActivation.upgrade = true;
