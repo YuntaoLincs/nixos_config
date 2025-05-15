@@ -44,6 +44,7 @@ in {
     fzf
     zoxide
     typst
+    graphviz
   ];
 
   programs.starship = { enable = true; };
@@ -315,14 +316,14 @@ in {
             "file-modification-indicator"
           ];
           center = [ "file-absolute-path" ];
-          right = [ "diagnostics" "position" ];
+          right = [ "diagnostics" "position" "position-percentage" ];
         };
 
         color-modes = true;
         lsp.display-inlay-hints = true;
         true-color = true;
-        end-of-line-diagnostics = "hint";
-        inline-diagnostics = { cursor-line = "warning"; };
+        end-of-line-diagnostics = "error";
+        inline-diagnostics = { cursor-line = "error"; };
       };
       keys = {
         normal = {
@@ -442,6 +443,11 @@ in {
       #   };
       # };
       dracula = { "inherits" = "dracula"; };
+      # python_no_hint = {
+      #   "inherits" = "dracula";
+      #   inline-diagnostics = { cursor-line = "error"; };
+
+      # };
     };
   };
   programs.home-manager.enable = true;
