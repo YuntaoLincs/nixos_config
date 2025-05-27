@@ -53,6 +53,8 @@
             "font-lxgw-bright"
             "orbstack"
             "motrix"
+            "anki"
+            "obsidian"
           ];
           # TODO: Need to be enable if mas list bug finished.
           # brews = [ "mas" ];

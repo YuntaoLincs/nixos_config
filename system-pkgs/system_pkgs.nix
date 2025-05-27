@@ -2,7 +2,6 @@
 with pkgs; [
   vim
   mkalias
-  obsidian
   google-chrome
   uv
   clang
