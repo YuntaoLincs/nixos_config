@@ -45,6 +45,7 @@ in {
     zoxide
     typst
     graphviz
+    pdm
   ];
 
   programs.starship = { enable = true; };
