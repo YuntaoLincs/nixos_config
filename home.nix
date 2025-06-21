@@ -45,7 +45,7 @@ in {
     zoxide
     typst
     graphviz
-    pdm
+    # pdm
   ];
 
   programs.starship = { enable = true; };
@@ -107,6 +107,7 @@ in {
           display-popup -E "tmux new-session -d -c '#{pane_current_path}' -s scratch && tmux set-option -t scratch status off && tmux attach-session -t scratch"
         }
       }
+      set -g focus-event on # enable the focus lost event in tmux (if iterm2 enable)
     '';
   };
   programs.zed-editor = {
@@ -319,6 +320,7 @@ in {
           center = [ "file-absolute-path" ];
           right = [ "diagnostics" "position" "position-percentage" ];
         };
+        auto-save = { focus-lost = true; };
 
         color-modes = true;
         lsp.display-inlay-hints = true;
