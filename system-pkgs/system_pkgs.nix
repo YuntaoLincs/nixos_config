@@ -21,6 +21,7 @@ with pkgs; [
   imagemagick
   poppler
 
+  gyre-fonts # Support for typst IEEE tex font
   nerd-fonts._0xproto
   nerd-fonts._3270
   nerd-fonts.agave

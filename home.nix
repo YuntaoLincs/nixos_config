@@ -321,7 +321,7 @@ in {
           right = [ "diagnostics" "position" "position-percentage" ];
         };
         auto-save = { focus-lost = true; };
-
+        line-number = "relative";
         color-modes = true;
         lsp.display-inlay-hints = true;
         true-color = true;

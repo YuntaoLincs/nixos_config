@@ -56,6 +56,7 @@
             "anki"
             "obsidian"
             # "yacreader"
+            "zotero"
           ];
           # TODO: Need to be enable if mas list bug finished.
           # brews = [ "mas" ];
