@@ -57,11 +57,15 @@
             "obsidian"
             # "yacreader"
             "zotero"
+            "trae" # AI editor provided by Bytedance
+            "karabiner-elements"
+            "stats"
+            "jordanbaird-ice"
           ];
           # TODO: Need to be enable if mas list bug finished.
           # brews = [ "mas" ];
           # masApps = { "vivid" = 6443470555; };
-          brews = [ "pandoc" "pdm" ];
+          brews = [ "pandoc" "pdm" "cmake" "boost" "node" ];
           onActivation.cleanup = "zap";
           onActivation.autoUpdate = true;
           onActivation.upgrade = true;
@@ -91,10 +95,10 @@
           dock.orientation = "right";
         };
 
-        system.keyboard = {
-          enableKeyMapping = true;
-          remapCapsLockToEscape = true;
-        };
+        # system.keyboard = {
+        #   enableKeyMapping = true;
+        #   remapCapsLockToEscape = true;
+        # };
 
         security.pam.services = { sudo_local.touchIdAuth = true; };
         # Necessary for using flakes on this system.
