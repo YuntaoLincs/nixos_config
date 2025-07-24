@@ -45,6 +45,7 @@ in {
     zoxide
     typst
     graphviz
+    eza
     # pdm
   ];
 
