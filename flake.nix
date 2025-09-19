@@ -63,6 +63,8 @@
             "jordanbaird-ice"
             "miniconda"
             "notion"
+            "notion-calendar"
+            "notion-mail"
           ];
           # TODO: Need to be enable if mas list bug finished.
           # brews = [ "mas" ];
