@@ -53,6 +53,9 @@ in
     typst
     graphviz
     eza
+    lua-language-server
+    pyright
+    ruff
     # pdm
   ];
 
@@ -63,18 +66,18 @@ in
   home.file = {
     ".vimrc".source = ./dot_file/vim_configuration;
     ".config/zed/keymap.json".source = ./dot_file/zed/keymap.json;
+    # "nvim" = {
+    #   source = ./dot_file/nvim-config;
+    #   recursive = true;
+    # };
+
+  };
+  xdg.configFile = {
     "nvim" = {
       source = ./dot_file/nvim-config;
       recursive = true;
     };
-
   };
-  # xdg.configFile = {
-  #   "nvim" = {
-  #     source = ./dot_file/nvim-config;
-  #     recursive = true;
-  #   };
-  # };
   programs.neovim = {
     enable = true;
     package = pkgs.neovim-unwrapped;
@@ -288,7 +291,7 @@ in
       require("starship"):setup()
     '';
     keymap = {
-      manager.prepend_keymap = [
+      prepend_keymap = [
         {
           on = "T";
           run = "plugin toggle-pane min-current";
