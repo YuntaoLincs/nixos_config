@@ -53,7 +53,6 @@
             "font-lxgw-bright"
             "orbstack"
             "motrix"
-            "anki"
             "obsidian"
             # "yacreader"
             "zotero"
@@ -65,6 +64,7 @@
             "notion"
             "notion-calendar"
             "notion-mail"
+            "google-chrome"
           ];
           # TODO: Need to be enable if mas list bug finished.
           # brews = [ "mas" ];
@@ -125,6 +125,7 @@
         # Add the home-manager vscode extensions market package set into the nixpkgs
 
         nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ];
+        system.primaryUser = "linyuntao";
 
       };
     in {

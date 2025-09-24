@@ -1,5 +1,11 @@
 # home.nix
-{ pkgs, helix, config, lib, ... }:
+{
+  pkgs,
+  helix,
+  config,
+  lib,
+  ...
+}:
 let
   yazi_flavor_pkgs = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
@@ -18,7 +24,8 @@ let
   #   owner = "Rolv-Apneseth"
   # }
 
-in {
+in
+{
   # Home Manager options go here
   home.username = "linyuntao"; # Set the user name (change as needed)
   home.homeDirectory = "/Users/linyuntao"; # Set the home directory
@@ -49,12 +56,30 @@ in {
     # pdm
   ];
 
-  programs.starship = { enable = true; };
+  programs.starship = {
+    enable = true;
+  };
 
   home.file = {
     ".vimrc".source = ./dot_file/vim_configuration;
     ".config/zed/keymap.json".source = ./dot_file/zed/keymap.json;
+    "nvim" = {
+      source = ./dot_file/nvim-config;
+      recursive = true;
+    };
+
   };
+  # xdg.configFile = {
+  #   "nvim" = {
+  #     source = ./dot_file/nvim-config;
+  #     recursive = true;
+  #   };
+  # };
+  programs.neovim = {
+    enable = true;
+    package = pkgs.neovim-unwrapped;
+  };
+
   programs.tmux = {
     enable = true;
     extraConfig = ''
@@ -219,9 +244,9 @@ in {
   # Enable VSCode and configure extensions via Home Manager
   programs.vscode = {
     enable = true;
-    extensions = with pkgs.vscode-marketplace; [
+    profiles.default.extensions = with pkgs.vscode-marketplace; [
       # vscodevim.vim
-      # Support for python 
+      # Support for python
       njpwerner.autodocstring
       visualstudioexptteam.vscodeintellicode
       visualstudioexptteam.intellicode-api-usage-examples
@@ -241,7 +266,11 @@ in {
 
   programs.yazi = {
     enable = true;
-    theme = { flavor = { dark = "catppuccin-frappe"; }; };
+    theme = {
+      flavor = {
+        dark = "catppuccin-frappe";
+      };
+    };
     flavors = {
       catppuccin-frappe = "${yazi_flavor_pkgs}/catppuccin-frappe.yazi";
     };
@@ -276,7 +305,10 @@ in {
           desc = "Jump to char";
         }
         {
-          on = [ "g" "c" ];
+          on = [
+            "g"
+            "c"
+          ];
           run = "plugin vcs-files";
           desc = "Show Git file changes";
         }
@@ -319,19 +351,29 @@ in {
             "file-modification-indicator"
           ];
           center = [ "file-absolute-path" ];
-          right = [ "diagnostics" "position" "position-percentage" ];
+          right = [
+            "diagnostics"
+            "position"
+            "position-percentage"
+          ];
         };
-        auto-save = { focus-lost = true; };
+        auto-save = {
+          focus-lost = true;
+        };
         line-number = "relative";
         color-modes = true;
         lsp.display-inlay-hints = true;
         true-color = true;
         end-of-line-diagnostics = "error";
-        inline-diagnostics = { cursor-line = "error"; };
+        inline-diagnostics = {
+          cursor-line = "error";
+        };
       };
       keys = {
         normal = {
-          space = { l = ":sh  ~/nix-darwin/shells/exec_lst_cmd.sh"; };
+          space = {
+            l = ":sh  ~/nix-darwin/shells/exec_lst_cmd.sh";
+          };
           C-y = [
             ":sh rm -f /tmp/unique-file"
             ":insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file"
@@ -359,20 +401,27 @@ in {
             # args = [  "debugpy.adapter" ];
             # command = "${pkgs.python3}/bin/python3}";
             command = "python";
-            args = [ "-m" "debugpy.adapter" ];
-            templates = [{
-              name = "source";
-              request = "launch";
-              completion = [{
-                name = "entrypoint";
-                completion = "filename";
-                default = ".";
-              }];
-              args = {
-                mode = "debug";
-                program = "{0}";
-              };
-            }];
+            args = [
+              "-m"
+              "debugpy.adapter"
+            ];
+            templates = [
+              {
+                name = "source";
+                request = "launch";
+                completion = [
+                  {
+                    name = "entrypoint";
+                    completion = "filename";
+                    default = ".";
+                  }
+                ];
+                args = {
+                  mode = "debug";
+                  program = "{0}";
+                };
+              }
+            ];
           };
         }
         {
@@ -386,7 +435,11 @@ in {
           auto-format = true;
           formatter = {
             command = "${pkgs.dprint}/bin/dprint";
-            args = [ "fmt" "--stdin" "md" ];
+            args = [
+              "fmt"
+              "--stdin"
+              "md"
+            ];
           };
           language-servers = [ "marksman" ];
         }
@@ -394,7 +447,9 @@ in {
           name = "typst";
           auto-format = true;
           language-servers = [ "tinymist" ];
-          formatter = { command = "${pkgs.typstfmt}/bin/typstfmt"; };
+          formatter = {
+            command = "${pkgs.typstfmt}/bin/typstfmt";
+          };
         }
         {
           name = "cpp";
@@ -410,8 +465,7 @@ in {
       ];
       language-server = {
         vscode-json-language-server = {
-          command =
-            "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
+          command = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
         };
         basedpyright = {
           command = "${pkgs.basedpyright}/bin/basedpyright-langserver";
@@ -422,11 +476,17 @@ in {
           args = [ "server" ];
         };
 
-        marksman = { command = "${pkgs.marksman}/bin/marksman"; };
+        marksman = {
+          command = "${pkgs.marksman}/bin/marksman";
+        };
 
-        nil = { command = "${pkgs.nil}/bin/nil"; };
+        nil = {
+          command = "${pkgs.nil}/bin/nil";
+        };
 
-        tinymist = { command = "${pkgs.tinymist}/bin/tinymist"; };
+        tinymist = {
+          command = "${pkgs.tinymist}/bin/tinymist";
+        };
       };
       # language-server.pylsp = {
       #  command = "${pkgs.pylsp}/bin/pylsp";
@@ -446,7 +506,9 @@ in {
       #   "ui."
       #   };
       # };
-      dracula = { "inherits" = "dracula"; };
+      dracula = {
+        "inherits" = "dracula";
+      };
       # python_no_hint = {
       #   "inherits" = "dracula";
       #   inline-diagnostics = { cursor-line = "error"; };
