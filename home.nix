@@ -37,6 +37,7 @@ in
     yazi
     helix
     git
+    lazygit # Git TUI for snacks.nvim lazygit integration
     alacritty
     zed-editor
     zsh
@@ -56,6 +57,12 @@ in
     lua-language-server
     pyright
     ruff
+    stylua # Lua formatter to fix luaformatter error
+    delta
+    rustup
+    nil # Nix language server for Helix
+    nixfmt
+    zsh-fzf-tab
     # pdm
   ];
 
@@ -81,6 +88,9 @@ in
   programs.neovim = {
     enable = true;
     package = pkgs.neovim-unwrapped;
+    withNodeJs = true;
+    withPython3 = true;
+    withRuby = true;
   };
 
   programs.tmux = {
@@ -89,7 +99,7 @@ in
       # Remove the old prefix
       unbind C-b
       set -g prefix M-w
-      bind M-w send-prefix    # Use alt+w as the send-prefix 
+      bind M-w send-prefix    # Use alt+w as the send-prefix
 
       # Enable mouse support
 
@@ -127,9 +137,9 @@ in
       # alt+w p to create a pop-up window in current env
       # alt+w p to hide the pop-up window
       # ctrl+d to kill this pop-up window
-      bind p if-shell -F '#{==:#{session_name},scratch}' { 
-        detach-client 
-      } { 
+      bind p if-shell -F '#{==:#{session_name},scratch}' {
+        detach-client
+      } {
         if-shell "tmux has-session -t scratch" {
           display-popup -E "tmux attach-session -t scratch"
         } {
@@ -159,10 +169,18 @@ in
     shellAliases = {
       ll = "ls -l";
       ls = "ls --color=auto";
-      update = "darwin-rebuild switch --flake ~/nix-darwin";
-      x = "sh ~/nix-darwin/shells/exec_cmd.sh $1";
-      lx = "sh ~/nix-darwin/shells/exec_lst_cmd.sh";
+      update = "sudo darwin-rebuild switch --flake ~/nix-darwin";
+      # x = "sh ~/nix-darwin/shells/exec_cmd.sh $1";
+      # lx = "sh ~/nix-darwin/shells/exec_lst_cmd.sh";
     };
+    # --- 1. Load fzf-tab here ---
+    plugins = [
+      {
+        name = "fzf-tab";
+        src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
+      }
+    ];
+
     initContent = ''
       autoload -U colors && colors
       setopt prompt_subst
@@ -187,6 +205,17 @@ in
     #   name = "zsh-z";
     #   src = "${pkgs.zsh-z}/share/zsh-z";
     # }];
+    # --- 2. Configure the Pop-up behavior here ---
+    initExtra = ''
+      # Force fzf-tab to use a pop-up style with exactly 12 lines (10 results + 2 border/info)
+      zstyle ':fzf-tab:*' fzf-flags --height=12
+
+      # Apply standard LS_COLORS to the completion menu
+      zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
+
+      # Optional: Preview directory content when completing 'cd'
+      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+    '';
 
     history.size = 10000;
   };

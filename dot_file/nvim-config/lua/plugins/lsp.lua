@@ -5,6 +5,7 @@ return {
       ensure_installed = {
         "lua-language-server",
         "pyright",
+        -- Note: nil and nixfmt are provided by nix-darwin, not Mason
       },
     },
     config = function(_, opts)
@@ -62,7 +63,7 @@ return {
       })
 
       local capabilities = require('blink.cmp').get_lsp_capabilities()
-      
+
       -- Auto-start lua_ls for Lua files
       vim.api.nvim_create_autocmd('FileType', {
         pattern = 'lua',
@@ -90,7 +91,8 @@ return {
             },
           })
         end,
-      })
+      }
+      )
 
       -- Auto-start pyright for Python files
       vim.api.nvim_create_autocmd('FileType', {
@@ -107,6 +109,26 @@ return {
                   autoSearchPaths = true,
                   useLibraryCodeForTypes = true,
                   diagnosticMode = 'workspace',
+                },
+              },
+            },
+          })
+        end,
+      })
+
+      -- Auto-start nil for Nix files
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'nix',
+        callback = function(args)
+          vim.lsp.start({
+            name = 'nil_ls',
+            cmd = { 'nil' },
+            root_dir = vim.fs.root(args.buf, { 'flake.nix', 'default.nix', 'shell.nix', '.git' }),
+            capabilities = capabilities,
+            settings = {
+              ['nil'] = {
+                formatting = {
+                  command = { 'nixfmt' },
                 },
               },
             },
@@ -142,5 +164,57 @@ return {
       })
 
     end
-  }
+  },
+  {
+    "stevearc/conform.nvim",
+    event = "BufWritePre",
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        -- Use the "_" filetype to run formatters on filetypes that don't
+        -- have other formatters configured.
+        ["_"] = { "trim_whitespace" },
+      },
+
+      format_on_save = function(_)
+        -- Disable with a global or buffer-local variable
+        if vim.g.enable_autoformat then
+          return { timeout_ms = 500, lsp_format = "fallback" }
+        end
+      end,
+    },
+    init = function()
+      vim.g.enable_autoformat = true
+      require("snacks").toggle
+        .new({
+          id = "auto_format",
+          name = "Auto format",
+          get = function()
+            return vim.g.enable_autoformat
+          end,
+          set = function(state)
+            vim.g.enable_autoformat = state
+          end,
+        })
+        :map("<leader>tf")
+    end,
+  },
+
+  {
+    "mfussenegger/nvim-lint",
+    event = "BufWritePost",
+    config = function()
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          -- try_lint without arguments runs the linters defined in `linters_by_ft`
+          -- for the current filetype
+          require("lint").try_lint()
+
+          -- You can call `try_lint` with a linter name or a list of names to always
+          -- run specific linters, independent of the `linters_by_ft` configuration
+          require("lint").try_lint("codespell")
+        end,
+      })
+    end,
+  },
 }

@@ -33,10 +33,8 @@ return {
       keymap = {
         -- If the command/function returns false or nil, the next command/function will be run.
         preset = "default",
-        ["<A-j>"] = { function(cmp) return cmp.select_next({ auto_insert = false }) end, "fallback", },
-        ["<A-k>"] = { function(cmp) return cmp.select_prev({ auto_insert = false }) end, "fallback", },
-        ["<C-n>"] = { function(cmp) return cmp.select_next({ auto_insert = false }) end, "fallback", },
-        ["<C-p>"] = { function(cmp) return cmp.select_prev({ auto_insert = false }) end, "fallback", },
+        ["<C-j>"] = { function(cmp) return cmp.select_next({ auto_insert = false }) end, "fallback", },
+        ["<C-k>"] = { function(cmp) return cmp.select_prev({ auto_insert = false }) end, "fallback", },
 
         ["<C-u>"] = { "scroll_documentation_up", "fallback" },
         ["<C-d>"] = { "scroll_documentation_down", "fallback" },
@@ -71,6 +69,12 @@ return {
           end
         end,
         providers = {
+          lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            -- make lazydev completions top priority (see `:h blink.cmp`)
+            score_offset = 95,
+          },
           path = {
             score_offset = 95,
             opts = {
@@ -236,12 +240,8 @@ return {
         },
         keymap = {
           preset = "none",
-          ["<Up>"] = { function(cmp) return cmp.select_prev({ auto_insert = false }) end, "fallback", },
-          ["<Down>"] = { function(cmp) return cmp.select_next({ auto_insert = false }) end, "fallback", },
           ["<C-j>"] = { function(cmp) return cmp.select_next({ auto_insert = false }) end, "fallback", },
           ["<C-k>"] = { function(cmp) return cmp.select_prev({ auto_insert = false }) end, "fallback", },
-          ["<C-p>"] = { function(cmp) return cmp.select_prev({ auto_insert = false }) end, "fallback", },
-          ["<C-n>"] = { function(cmp) return cmp.select_next({ auto_insert = false }) end, "fallback", },
           ["<Tab>"] = { function(cmp) return cmp.accept() end, "fallback", },
           ["<CR>"] = { function(cmp) if vim.fn.getcmdtype() == ":" then return cmp.accept_and_enter() end return false end, "fallback", },
           ["<A-/>"] = { function(cmp) if cmp.is_menu_visible() then return cmp.hide() else return cmp.show() end end, "fallback", },

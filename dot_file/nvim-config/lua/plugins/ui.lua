@@ -126,7 +126,7 @@ return {
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      {"rcarriga/nvim-notify", opts = {background_colour = "#000000"}}
+      -- {"rcarriga/nvim-notify", opts = {background_colour = "#000000"}}
     },
     keys = {
       { "<leader>sN", "<CMD>Noice pick<CR>", desc = "[Noice] Pick history messages" }, -- FIXME: Currently unusable
@@ -160,5 +160,39 @@ return {
         { filter = { event = "msg_show", kind = "", }, opts = { skip = true }, },
       },
     }
-  }
+  },
+  {
+    "echasnovski/mini.diff",
+    event = "VeryLazy",
+    version = "*",
+    opts = {},
+  },
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      ---@type false | "classic" | "modern" | "helix"
+      preset = "helix",
+      win = {
+        -- no_overlap = true,
+        title = false,
+        width = 0.5,
+      },
+      -- stylua: ignore
+      spec = {
+        { "<leader>cc", group = "<CodeCompanion>", icon = "" },
+        { "<leader>s",  group = "<Snacks>"                    },
+        { "<leader>t",  group = "<Snacks> Toggle"             },
+      },
+      -- expand all nodes wighout a description
+      expand = function(node)
+        return not node.desc
+      end,
+    },
+    keys = {
+      -- stylua: ignore
+      { "<leader>?", function() require("which-key").show({ global = false }) end, desc = "[Which-key] Buffer Local Keymaps", },
+    },
+  },
 }
