@@ -62,8 +62,11 @@
               "steam"
               "iina"
               "iterm2"
+
               "font-lxgw-wenkai"
               "font-lxgw-bright"
+              "font-monaspace"
+
               "orbstack"
               "motrix"
               "obsidian"
@@ -78,6 +81,7 @@
               "notion-calendar"
               "notion-mail"
               "google-chrome"
+              "visual-studio-code"
             ];
             # TODO: Need to be enable if mas list bug finished.
             # brews = [ "mas" ];
@@ -133,6 +137,11 @@
 
           # Enable alternative shell support in nix-darwin.
           # programs.fish.enable = true;
+
+          services.tailscale = {
+            enable = true;
+            package = pkgs.tailscale;
+          };
 
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
