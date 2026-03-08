@@ -33,13 +33,16 @@ in
 
   # Example: Add some packages
   home.packages = with pkgs; [
-    vscode # Install VSCode package here
-    yazi
+    #editor
+    # vscode # Install VSCode package here
     helix
+    neovim
+    zed-editor
+
+    yazi
     git
     lazygit # Git TUI for snacks.nvim lazygit integration
     alacritty
-    zed-editor
     zsh
     tmux
     mpv
@@ -50,10 +53,14 @@ in
     fd
     ripgrep
     fzf
+    zsh-fzf-tab # fzf-tab, completion for zsh
     zoxide
     typst
     graphviz
     eza
+    git-annex
+
+    #language lsp
     lua-language-server
     pyright
     ruff
@@ -62,7 +69,6 @@ in
     rustup
     nil # Nix language server for Helix
     nixfmt
-    zsh-fzf-tab
     # pdm
   ];
 
@@ -79,19 +85,19 @@ in
     # };
 
   };
-  xdg.configFile = {
-    "nvim" = {
-      source = ./dot_file/nvim-config;
-      recursive = true;
-    };
-  };
-  programs.neovim = {
-    enable = true;
-    package = pkgs.neovim-unwrapped;
-    withNodeJs = true;
-    withPython3 = true;
-    withRuby = true;
-  };
+  # xdg.configFile = {
+  #   "nvim" = {
+  #     source = ./dot_file/nvim-config;
+  #     recursive = true;
+  #   };
+  # };
+  # programs.neovim = {
+  #   enable = true;
+  #   package = pkgs.neovim-unwrapped;
+  #   withNodeJs = true;
+  #   withPython3 = true;
+  #   withRuby = true;
+  # };
 
   programs.tmux = {
     enable = true;
@@ -274,27 +280,27 @@ in
   };
 
   # Enable VSCode and configure extensions via Home Manager
-  programs.vscode = {
-    enable = true;
-    profiles.default.extensions = with pkgs.vscode-marketplace; [
-      # vscodevim.vim
-      # Support for python
-      njpwerner.autodocstring
-      visualstudioexptteam.vscodeintellicode
-      visualstudioexptteam.intellicode-api-usage-examples
-      wholroyd.jinja
-      ms-python.python
-      ms-python.vscode-pylance
-      ms-python.debugpy
-      batisteo.vscode-django
-      kevinrose.vsc-python-indent
-      donjayamanne.python-environment-manager
-      jasew.vscode-helix-emulation
-      # ms-vscode.cpptools
-      ms-vscode.cpptools-themes
-    ];
+  # programs.vscode = {
+  #   enable = true;
+  #   profiles.default.extensions = with pkgs.vscode-marketplace; [
+  #     # vscodevim.vim
+  #     # Support for python
+  #     njpwerner.autodocstring
+  #     visualstudioexptteam.vscodeintellicode
+  #     visualstudioexptteam.intellicode-api-usage-examples
+  #     wholroyd.jinja
+  #     ms-python.python
+  #     ms-python.vscode-pylance
+  #     ms-python.debugpy
+  #     batisteo.vscode-django
+  #     kevinrose.vsc-python-indent
+  #     donjayamanne.python-environment-manager
+  #     jasew.vscode-helix-emulation
+  #     # ms-vscode.cpptools
+  #     ms-vscode.cpptools-themes
+  #   ];
 
-  };
+  # };
 
   programs.yazi = {
     enable = true;
