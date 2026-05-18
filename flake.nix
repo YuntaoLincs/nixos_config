@@ -265,17 +265,18 @@
 
       # 新 Mac 极简配置：远程登录瘦客户端
       # $ darwin-rebuild build --flake .#newmac
+      # 注：不引入 mac-app-util，因为本机所有 nix 包都是 CLI 工具，没有 GUI 应用
+      # 需要被链接到 /Applications/Nix Apps；而且 mac-app-util 依赖 SBCL 编译，
+      # 会从 gitlab.common-lisp.net 拉极不稳定的 iterate 库。
       darwinConfigurations."newmac" = nix-darwin.lib.darwinSystem {
         modules = [
           newmacConfiguration
-          mac-app-util.darwinModules.default
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.linyuntao = import ./home-newmac.nix;
             home-manager.extraSpecialArgs = inputs;
-            home-manager.sharedModules = [ mac-app-util.homeManagerModules.default ];
           }
           nix-homebrew.darwinModules.nix-homebrew
           {
