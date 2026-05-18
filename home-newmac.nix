@@ -13,11 +13,14 @@ let
     rev = "54ab389e4deb3d1bc1d8de18d99e825962a55da1";
     sha256 = "sha256-46x4K4dx4rlU108SXhctJOeGlO/W57Pnofb914Sa4vA=";
   };
+  # Pin 到 0897e20（2026-02-27）；该 commit 的插件要求 yazi >= 26.1.22，
+  # 正好匹配 nixpkgs 当前的 yazi 26.1.22。再新的 plugin commit 会要求
+  # 26.5.6+，但 nixpkgs 还没跟上。
   yazi_plugin_pkgs = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
-    rev = "5d5c4803dd12bab4e4f19d606f8db0c871e6bec5";
-    sha256 = "sha256-cZlnrlgv8+SFeNgIW69q//i/apcpvAv41q5W8bJwVaI=";
+    rev = "0897e20d41b79a5ec8e80e645b041bb950547a0b";
+    sha256 = "sha256-tHOHWFH9E7aGrmHb8bUD1sLGU0OIdTjQ2p4SbJVfh/s=";
   };
 in
 {
