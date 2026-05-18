@@ -6,17 +6,18 @@
   ...
 }:
 let
+  # Pin 到具体 commit 而不是 main 分支，避免上游推新 commit 导致 sha256 失效
   yazi_flavor_pkgs = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "flavors";
-    rev = "main";
-    sha256 = "sha256-nhIhCMBqr4VSzesplQRF6Ik55b3Ljae0dN+TYbzQb5s";
+    rev = "54ab389e4deb3d1bc1d8de18d99e825962a55da1";
+    sha256 = "sha256-46x4K4dx4rlU108SXhctJOeGlO/W57Pnofb914Sa4vA=";
   };
   yazi_plugin_pkgs = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
-    rev = "main";
-    sha256 = "sha256-LWN0riaUazQl3llTNNUMktG+7GLAHaG/IxNj1gFhDRE=";
+    rev = "5d5c4803dd12bab4e4f19d606f8db0c871e6bec5";
+    sha256 = "sha256-cZlnrlgv8+SFeNgIW69q//i/apcpvAv41q5W8bJwVaI=";
   };
 in
 {
