@@ -200,7 +200,10 @@
             sudo_local.text = "auth sufficient pam_tid.so.2";
           };
 
-          nix.settings.experimental-features = "nix-command flakes";
+          # Determinate Nix 用自己的 daemon 管理 Nix 安装，必须关掉 nix-darwin 的接管。
+          # 这意味着 nix.settings.* 等选项不生效，但 Determinate 默认已经开启
+          # nix-command 和 flakes，所以不影响使用。
+          nix.enable = false;
 
           services.tailscale = {
             enable = true;
