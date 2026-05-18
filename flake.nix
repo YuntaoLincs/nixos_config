@@ -160,6 +160,59 @@
           system.primaryUser = "linyuntao";
 
         };
+      newmacConfiguration =
+        { pkgs, config, ... }:
+        {
+          nixpkgs.config.allowUnfree = true;
+          environment.systemPackages = import ./system-pkgs/system_pkgs_newmac.nix { pkgs = pkgs; };
+          homebrew = {
+            enable = true;
+            casks = [ "iterm2" ];
+            brews = [ ];
+            onActivation.cleanup = "zap";
+            onActivation.autoUpdate = true;
+            onActivation.upgrade = true;
+          };
+          fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+
+          system.activationScripts.applications.text =
+            let
+              env = pkgs.buildEnv {
+                name = "system-applications";
+                paths = config.environment.systemPackages;
+                pathsToLink = "/Applications";
+              };
+            in
+            pkgs.lib.mkForce ''
+              # Set up applications.
+              echo "setting up/Applications..." >&2
+              rm -rf /Applications/Nix\ Apps
+              mkdir -p /Applications/Nix\ Apps
+              find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
+              while read -r src; do
+                app_name=$(basename "$src")
+                echo "copying $src" >&2
+                ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
+              done
+            '';
+
+          security.pam.services = {
+            sudo_local.text = "auth sufficient pam_tid.so.2";
+          };
+
+          nix.settings.experimental-features = "nix-command flakes";
+
+          services.tailscale = {
+            enable = true;
+            package = pkgs.tailscale;
+          };
+
+          system.configurationRevision = self.rev or self.dirtyRev or null;
+          system.stateVersion = 6;
+          nixpkgs.hostPlatform = "aarch64-darwin";
+          users.users.linyuntao.home = "/Users/linyuntao";
+          system.primaryUser = "linyuntao";
+        };
     in
     {
       # Build darwin flake using:
@@ -204,6 +257,36 @@
               # Optional: Enable fully-declarative tap management
               #
               # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
+              mutableTaps = false;
+            };
+          }
+        ];
+      };
+
+      # 新 Mac 极简配置：远程登录瘦客户端
+      # $ darwin-rebuild build --flake .#newmac
+      darwinConfigurations."newmac" = nix-darwin.lib.darwinSystem {
+        modules = [
+          newmacConfiguration
+          mac-app-util.darwinModules.default
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.linyuntao = import ./home-newmac.nix;
+            home-manager.extraSpecialArgs = inputs;
+            home-manager.sharedModules = [ mac-app-util.homeManagerModules.default ];
+          }
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              enable = true;
+              enableRosetta = true;
+              user = "linyuntao";
+              taps = {
+                "homebrew/homebrew-core" = homebrew-core;
+                "homebrew/homebrew-cask" = homebrew-cask;
+              };
               mutableTaps = false;
             };
           }
