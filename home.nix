@@ -275,8 +275,8 @@ in
   programs.git = {
     enable = true;
     ignores = [ "ssh_folder" ];
-    userEmail = "lin123456steve@outlook.com";
-    userName = "YuntaoLincs";
+    settings.user.email = "lin123456steve@outlook.com";
+    settings.user.name = "YuntaoLincs";
   };
 
   # Enable VSCode and configure extensions via Home Manager
@@ -486,7 +486,7 @@ in
           auto-format = true;
           language-servers = [ "tinymist" ];
           formatter = {
-            command = "${pkgs.typstfmt}/bin/typstfmt";
+            command = "${pkgs.typstyle}/bin/typstyle";
           };
         }
         {
