@@ -1,7 +1,6 @@
 # home.nix
 {
   pkgs,
-  helix,
   config,
   lib,
   ...
@@ -358,7 +357,8 @@ in
   programs.helix = {
     enable = true;
     defaultEditor = true;
-    package = helix.packages.${pkgs.system}.default;
+    # 用 nixpkgs helix（不再用 helix flake input 的 master），
+    # 避免上游 tree-sitter grammar 仓库失效导致 build/eval 失败
     settings = {
       # theme = "autumn_night_transparent";
       theme = "dracula";

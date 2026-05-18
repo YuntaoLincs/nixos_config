@@ -77,11 +77,6 @@
               "stats"
               "jordanbaird-ice"
               "miniconda"
-              "notion"
-              "notion-calendar"
-              "notion-mail"
-              "google-chrome"
-              "visual-studio-code"
             ];
             # TODO: Need to be enable if mas list bug finished.
             # brews = [ "mas" ];
