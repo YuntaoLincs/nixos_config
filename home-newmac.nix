@@ -1,7 +1,6 @@
 # home-newmac.nix — 远程登录瘦客户端配置
 {
   pkgs,
-  helix,
   config,
   lib,
   ...
@@ -229,7 +228,8 @@ in
   programs.helix = {
     enable = true;
     defaultEditor = true;
-    package = helix.packages.${pkgs.system}.default;
+    # 用 nixpkgs 自带的 helix（不再用 helix flake input 的 master），
+    # 避免上游 tree-sitter grammar 仓库失效导致 build 失败
     settings = {
       theme = "dracula";
       editor = {
