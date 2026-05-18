@@ -82,6 +82,7 @@
               "notion-mail"
               "google-chrome"
               "visual-studio-code"
+              "zed"
             ];
             # TODO: Need to be enable if mas list bug finished.
             # brews = [ "mas" ];

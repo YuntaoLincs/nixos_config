@@ -37,7 +37,6 @@ in
     # vscode # Install VSCode package here
     helix
     neovim
-    zed-editor
 
     yazi
     git
@@ -78,7 +77,6 @@ in
 
   home.file = {
     ".vimrc".source = ./dot_file/vim_configuration;
-    ".config/zed/keymap.json".source = ./dot_file/zed/keymap.json;
     # "nvim" = {
     #   source = ./dot_file/nvim-config;
     #   recursive = true;
@@ -154,17 +152,6 @@ in
       }
       set -g focus-event on # enable the focus lost event in tmux (if iterm2 enable)
     '';
-  };
-  programs.zed-editor = {
-    enable = true;
-    # userKeymaps = import ./home-package/zed/keymap.nix;
-    # # userSettings = import ./home-package/zed/setting.nix;
-    userSettings = {
-      vim_mode = true;
-      ui_font_size = 24;
-      buffer_font_size = 24;
-      buffer_font_family = "JetBrainsMono Nerd Font";
-    };
   };
   programs.zsh = {
     enable = true;
