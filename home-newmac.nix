@@ -22,6 +22,23 @@ let
     rev = "0897e20d41b79a5ec8e80e645b041bb950547a0b";
     sha256 = "sha256-tHOHWFH9E7aGrmHb8bUD1sLGU0OIdTjQ2p4SbJVfh/s=";
   };
+  # Launch Helix in iTerm's "Helix" profile (LXGW WenKai Mono), restore the
+  # "Default" profile on exit. A real script (not a shell function) so every
+  # launch path — typing `hx`, $EDITOR, yazi's opener — gets the font switch.
+  # Wraps the SetProfile escape in tmux passthrough when inside tmux.
+  hxw = pkgs.writeShellScriptBin "hxw" ''
+    setp=$'\e]1337;SetProfile=Helix\a'
+    restp=$'\e]1337;SetProfile=Default\a'
+    if [ -n "''${TMUX:-}" ]; then
+      setp=$'\ePtmux;\e'"$setp"$'\e\\'
+      restp=$'\ePtmux;\e'"$restp"$'\e\\'
+    fi
+    printf '%s' "$setp"
+    ${pkgs.helix}/bin/hx "$@"
+    rc=$?
+    printf '%s' "$restp"
+    exit $rc
+  '';
 in
 {
   home.username = "linyuntao";
@@ -47,6 +64,10 @@ in
     eza
     nil
     nixfmt
+    basedpyright
+    ruff
+    nerd-fonts.jetbrains-mono
+    hxw
   ];
 
   home.file = {
@@ -142,6 +163,11 @@ in
       	fi
       	rm -f -- "$tmp"
       }
+
+      # Open Helix via the font-switching wrapper (iTerm "Helix" profile =
+      # LXGW WenKai Mono). hxw is a real script, so yazi/$EDITOR use it too.
+      alias hx='hxw'
+      export EDITOR=hxw VISUAL=hxw
       eval "$(zoxide init zsh)"
 
       export PATH="/Users/linyuntao/.local/bin:$PATH"
@@ -229,9 +255,16 @@ in
     };
   };
 
+  # Use the font-switching wrapper as the editor so yazi / git / etc. all open
+  # Helix in the LXGW WenKai Mono profile (defaultEditor would force EDITOR=hx).
+  home.sessionVariables = {
+    EDITOR = "hxw";
+    VISUAL = "hxw";
+  };
+
   programs.helix = {
     enable = true;
-    defaultEditor = true;
+    defaultEditor = false;
     # 用 nixpkgs 自带的 helix（不再用 helix flake input 的 master），
     # 避免上游 tree-sitter grammar 仓库失效导致 build 失败
     settings = {
@@ -277,10 +310,41 @@ in
           formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
           language-servers = [ "nil" ];
         }
+        {
+          name = "python";
+          auto-format = true;
+          # ruff first so it owns formatting/organize-imports; basedpyright
+          # provides types, completion, go-to-def and inlay hints.
+          language-servers = [
+            "ruff"
+            "basedpyright"
+          ];
+        }
       ];
       language-server = {
         nil = {
           command = "${pkgs.nil}/bin/nil";
+        };
+        basedpyright = {
+          command = "${pkgs.basedpyright}/bin/basedpyright-langserver";
+          args = [ "--stdio" ];
+          config.basedpyright.analysis = {
+            autoImportCompletions = true;
+            typeCheckingMode = "standard";
+            diagnosticMode = "openFilesOnly";
+            # Allow `import sibling` in scripts run directly (experiment files).
+            diagnosticSeverityOverrides.reportImplicitRelativeImport = "none";
+            inlayHints = {
+              variableTypes = true;
+              callArgumentNames = true;
+              functionReturnTypes = true;
+              genericTypes = true;
+            };
+          };
+        };
+        ruff = {
+          command = "${pkgs.ruff}/bin/ruff";
+          args = [ "server" ];
         };
       };
     };
